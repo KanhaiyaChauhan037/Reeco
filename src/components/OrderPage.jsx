@@ -187,11 +187,17 @@ const OrderPage = () => {
                     fontSize={"20px"}
                     cursor={"pointer"}
                     onClick={() => handleConfirm("approved", el.id)}
+                    style={{ color: getStatusColor(el.status) === "green" ? "green" : "inherit" }}
                   />
                   <RxCross2
                     fontSize={"20px"}
                     cursor={"pointer"}
                     onClick={() => openDialog(el.id)}
+                    style={{
+                      color: getStatusColor(el.status) === "red" || getStatusColor(el.status) === "tomato"
+                        ? "red"
+                        : "inherit"
+                    }}
                   />
                 <AddItem/>
                 </Flex>
