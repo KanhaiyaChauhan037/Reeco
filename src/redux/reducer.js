@@ -1,4 +1,4 @@
-import { Add, Getdata, Deletedata, Editdata } from "./ActionType";
+import {Getdata, Editdata, Editprice } from "./ActionType";
 
 const initialState = {
   loading: true,
@@ -27,7 +27,15 @@ export const Reducer = (state = initialState, action) => {
         get: updatedData,
       };
     }
-   
+    case Editprice: {
+      const updatedData = state.get.map((item) =>
+        item.id === action.payload.id ? { ...item, ...action.payload } : item
+      );
+      return {
+        ...state,
+        get: updatedData,
+      };
+    }
     
     default:
       return state;

@@ -28,10 +28,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { editdata, getdata } from "../redux/action";
 import { CiSearch } from "react-icons/ci";
 import { FaPrint } from "react-icons/fa";
-import AddItem from "./AddItem";
-
+import EditPrice from "./EditPrice";
+import { RingLoader } from "react-spinners";
 const OrderPage = () => {
   const data = useSelector((state) => state.get);
+  const loading = useSelector((state) => state.loading);
   const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
@@ -123,23 +124,29 @@ const OrderPage = () => {
     >
       <Flex justifyContent={"space-between"}>
         <InputGroup w="40%">
-          <Input type="text" placeholder="search by product name"  
+          <Input
+            type="text"
+            placeholder="search by product name"
             value={searchTerm}
             onChange={handleSearchChange}
-          borderRadius={"20px"} />
+            borderRadius={"20px"}
+          />
           <InputRightAddon
             children={<CiSearch />}
             borderRadius={"0 20px 20px 0"}
           />
         </InputGroup>
         <Flex alignItems={"center"} gap={"30px"}>
-         
-        <Button  bg={"none"}
+          <Button
+            bg={"none"}
             h="33px"
             color="green.800"
             borderRadius={"20px"}
-            border="1px solid green" >Add Item</Button>
-        
+            border="1px solid green"
+          >
+            Add Item
+          </Button>
+
           <FaPrint fontSize={"25px"} color="green" />
         </Flex>
       </Flex>
@@ -157,54 +164,77 @@ const OrderPage = () => {
             <Th> </Th>
           </Tr>
         </Thead>
-        <Tbody>
-         {(searchTerm ? searchResults : data).map((el) => (
-            <Tr key={el.id}>
-              <Td>
-                <Image w="45px" src={img} />
-              </Td>
-              <Td>{el.title}</Td>
-              <Td>{el.brand}</Td>
-              <Td>${el.Price}</Td>
-              <Td>{el.quantity}</Td>
-              <Td>${el.Price * el.quantity}</Td>
-              <Td w="200px"
-              >
-                <Box  textAlign={"center"} style={{ backgroundColor: getStatusColor(el.status) }}
-                fontSize={"15px"}
-                color="white"
-                // h="20px"
-                padding="10px"
-                borderRadius={"20px"}
-                >
 
-                {el.status}{" "}
-                </Box>
-              </Td>
-              <Td>
-                <Flex alignItems={"center"} gap="10px">
-                  <FaCheck
-                    fontSize={"20px"}
-                    cursor={"pointer"}
-                    onClick={() => handleConfirm("approved", el.id)}
-                    style={{ color: getStatusColor(el.status) === "green" ? "green" : "inherit" }}
-                  />
-                  <RxCross2
-                    fontSize={"20px"}
-                    cursor={"pointer"}
-                    onClick={() => openDialog(el.id)}
-                    style={{
-                      color: getStatusColor(el.status) === "red" || getStatusColor(el.status) === "tomato"
-                        ? "red"
-                        : "inherit"
-                    }}
-                  />
-                <AddItem/>
-                </Flex>
-              </Td>
-            </Tr>
-          ))}
-        </Tbody>
+        {loading ? (
+          <Tr>
+            <Td ml="20%" textAlign="center" colSpan={8} maxW="20px">
+              <RingLoader color={"#123abc"} loading={true} />
+            </Td>
+          </Tr>
+        ) : (
+          <Tbody>
+            {(searchTerm ? searchResults : data).map((el) => (
+              <Tr key={el.id}>
+                <Td>
+                  <Image w="45px" src={img} />
+                </Td>
+                <Td>{el.title}</Td>
+                <Td>{el.brand}</Td>
+                <Td>
+                  {el["updated-price"] ? (
+                    <>
+                       ${el["updated-price"]} <del>${el.Price}</del>
+                    </>
+                  ) : (
+                    `$${el.Price}`
+                  )}
+                </Td>
+                <Td>{el.quantity}</Td>
+                <Td>${el.Price * el.quantity}</Td>
+                <Td w="200px">
+                  <Box
+                    textAlign={"center"}
+                    style={{ backgroundColor: getStatusColor(el.status) }}
+                    fontSize={"15px"}
+                    color="white"
+                    padding="10px"
+                    borderRadius={"20px"}
+                  >
+                    {el.status}{" "}
+                  </Box>
+                </Td>
+                <Td>
+                  <Flex alignItems={"center"} gap="10px">
+                    <FaCheck
+                      fontSize={"20px"}
+                      cursor={"pointer"}
+                      onClick={() => handleConfirm("approved", el.id)}
+                      style={{
+                        color:
+                          getStatusColor(el.status) === "green"
+                            ? "green"
+                            : "inherit",
+                      }}
+                    />
+                    <RxCross2
+                      fontSize={"20px"}
+                      cursor={"pointer"}
+                      onClick={() => openDialog(el.id)}
+                      style={{
+                        color:
+                          getStatusColor(el.status) === "red" ||
+                          getStatusColor(el.status) === "tomato"
+                            ? "red"
+                            : "inherit",
+                      }}
+                    />
+                    <EditPrice data={data} id={el.id} />
+                  </Flex>
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        )}
       </Table>
 
       <AlertDialog

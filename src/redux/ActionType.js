@@ -1,5 +1,5 @@
 export const Getdata = "Getdata";
 export const Loading = "Loading";
 export const Add = "Add";
-export const Deletedata = "Deletedata";
+export const Editprice = "Editprice";
 export const Editdata = "Editdata";
