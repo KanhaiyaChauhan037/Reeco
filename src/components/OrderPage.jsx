@@ -107,6 +107,12 @@ const OrderPage = () => {
         return "tomato";
       case "missing-urgent":
         return "red";
+        case "Price and Quantity Updated":
+          return "tomato";
+          case "Price Updated":
+            return "tomato";
+            case "Quantity Updated":
+            return "tomato"
       default:
         return "inherit";
     }
@@ -190,7 +196,15 @@ const OrderPage = () => {
                   )}
                 </Td>
                 <Td>{el.quantity}</Td>
-                <Td>${el.Price * el.quantity}</Td>
+                <Td>
+                ${el.Price * el.quantity}
+              
+  {/* {el["updated-price"] !== null && el["updated-price"] !== "" && el.quantity !== null && el.Price !== null
+    ? (parseFloat(el["updated-price"]) * parseFloat(el.quantity)).toFixed(2)
+    : (parseFloat(el.Price) * parseFloat(el.quantity)).toFixed(2)} */}
+</Td>
+
+
                 <Td w="200px">
                   <Box
                     textAlign={"center"}

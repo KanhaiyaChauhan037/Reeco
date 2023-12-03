@@ -6,7 +6,7 @@ export const getdata = () => async (dispatch) => {
     try {
          const res = await axios.get("https://mock-ezok.onrender.com/orders");
          dispatch({ type: Getdata, payload: res.data })
-         console.log("aciton", res)
+     //     console.log("aciton", res)
     } catch (error) {
          console.log("error")
     }
@@ -17,7 +17,7 @@ export const editdata = (id,data) => async (dispatch) => {
      try {
           const res = await axios.patch(`https://mock-ezok.onrender.com/orders/${id}`,data);
           dispatch({ type: Editdata, payload: res.data })
-          console.log("aciton", res)
+          // console.log("aciton", res)
      } catch (error) {
           console.log("error")
      }
@@ -28,7 +28,7 @@ export const editdata = (id,data) => async (dispatch) => {
      try {
           const res = await axios.patch(`https://mock-ezok.onrender.com/orders/${id}`,data);
           dispatch({ type: Editprice, payload: res.data })
-          console.log("aciton", res)
+          // console.log("aciton", res)
      } catch (error) {
           console.log("error")
      }

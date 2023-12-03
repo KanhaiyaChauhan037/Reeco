@@ -29,6 +29,7 @@ const EditPrice = ({ data, id }) => {
       ? product["updated-price"]
       : product.Price;
   });
+  
 
   const [quantity, setQuantity] = useState(
     data.find((el) => el.id === id).quantity
@@ -52,20 +53,34 @@ const EditPrice = ({ data, id }) => {
   };
   const dispatch = useDispatch();
   const handleSave = () => {
+    let status;
+  
+    if (price !== filterdata.Price && quantity !== filterdata.quantity) {
+      status = "Price and Quantity Updated";
+    } else if (price !== filterdata.Price) {
+      status = "Price Updated";
+    } else if (quantity !== filterdata.quantity) {
+      status = "Quantity Updated";
+    } else {
+      status = filterdata.status || "Default Status";
+    }
+  
     const da = {
       ...filterdata,
       "updated-price": price,
       reason: selectedReason,
-      quantity
-      
+      quantity,
+      status,
     };
+  
     dispatch(editprice(id, da));
-    console.log("Updated Price:", price);
-    console.log("Updated Quantity:", quantity);
-    console.log("Selected Reason:", selectedReason);
+    // console.log("Updated Price:", price);
+    // console.log("Updated Quantity:", quantity);
+    // console.log("Selected Reason:", selectedReason);
+    // console.log("Updated Status:", status);
     onClose();
   };
-
+  
   return (
     <>
       <Text cursor={"pointer"} onClick={onOpen}>
